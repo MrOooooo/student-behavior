@@ -1,0 +1,7 @@
+reflex==0.7.1
+opencv-python==4.11.0.86
+tensorflow==2.18.0
+mediapipe
+numpy
+ultralytics==8.3.91
+openvino>=2024.0.0
