@@ -3,7 +3,7 @@ import reflex as rx
 class ThresholdState(rx.State):
     confidence_threshold: float = 0.25
     iou_threshold: float = 0.70
-    duration_threshold: float = 5.0 
+    duration_threshold: float = 5.0
     model1_confidence_threshold: float = 0.25
     model1_iou_threshold: float = 0.70
     model2_confidence_threshold: float = 0.25
@@ -15,15 +15,25 @@ class ThresholdState(rx.State):
     model4_action_confidence_threshold: float = 0.75
     model5_face_confidence_threshold: float = 0.50
     model5_emotion_confidence_threshold: float = 0.35
+    model6_confidence_threshold: float = 0.10
+    model6_iou_threshold: float = 0.45
+    model7_confidence_threshold: float = 0.25
+    model7_iou_threshold: float = 0.70
+    model8_confidence_threshold: float = 0.25
+    model8_iou_threshold: float = 0.70
     cross_threshold_model: int = 1
 
     def prev_cross_threshold_model(self):
-        if self.cross_threshold_model > 1:
-            self.cross_threshold_model -= 1
+        visible_models = [1, 2, 3, 4, 5, 7]
+        current_index = visible_models.index(self.cross_threshold_model) if self.cross_threshold_model in visible_models else 0
+        if current_index > 0:
+            self.cross_threshold_model = visible_models[current_index - 1]
 
     def next_cross_threshold_model(self):
-        if self.cross_threshold_model < 5:
-            self.cross_threshold_model += 1
+        visible_models = [1, 2, 3, 4, 5, 7]
+        current_index = visible_models.index(self.cross_threshold_model) if self.cross_threshold_model in visible_models else 0
+        if current_index < len(visible_models) - 1:
+            self.cross_threshold_model = visible_models[current_index + 1]
 
     def increment_confidence(self):
         if self.confidence_threshold < 1.0:
@@ -37,7 +47,7 @@ class ThresholdState(rx.State):
 
     def increment_second_threshold(self, active_model: int):
         if active_model == 3:
-            if self.duration_threshold < 10.0: 
+            if self.duration_threshold < 10.0:
                 self.duration_threshold += 0.1
                 self.duration_threshold = round(self.duration_threshold, 1)
         else:
@@ -47,7 +57,7 @@ class ThresholdState(rx.State):
 
     def decrement_second_threshold(self, active_model: int):
         if active_model == 3:
-            if self.duration_threshold > 1.0: 
+            if self.duration_threshold > 1.0:
                 self.duration_threshold -= 0.1
                 self.duration_threshold = round(self.duration_threshold, 1)
         else:
@@ -83,6 +93,12 @@ class ThresholdState(rx.State):
                 self.model4_confidence_threshold = parsed_value
             elif model_number == 5:
                 self.model5_face_confidence_threshold = parsed_value
+            elif model_number == 6:
+                self.model6_confidence_threshold = parsed_value
+            elif model_number == 7:
+                self.model7_confidence_threshold = parsed_value
+            elif model_number == 8:
+                self.model8_confidence_threshold = parsed_value
         except ValueError:
             print("Invalid input for model confidence threshold")
 
@@ -99,6 +115,12 @@ class ThresholdState(rx.State):
                 self.model4_iou_threshold = parsed_value
             elif model_number == 5:
                 self.model5_emotion_confidence_threshold = parsed_value
+            elif model_number == 6:
+                self.model6_iou_threshold = parsed_value
+            elif model_number == 7:
+                self.model7_iou_threshold = parsed_value
+            elif model_number == 8:
+                self.model8_iou_threshold = parsed_value
         except ValueError:
             print("Invalid input for model second threshold")
 
@@ -109,7 +131,6 @@ class ThresholdState(rx.State):
             print("Invalid input for Model 4 action confidence threshold")
 
     def set_model_defaults(self, model_number: int):
-        """Set default threshold values based on model number"""
         if model_number == 3:
             self.confidence_threshold = 0.6
             self.duration_threshold = 5.0
@@ -119,6 +140,15 @@ class ThresholdState(rx.State):
         elif model_number == 5:
             self.confidence_threshold = 0.50
             self.iou_threshold = 0.35
-        else:  # YOLO models
+        elif model_number == 6:
+            self.confidence_threshold = 0.10
+            self.iou_threshold = 0.45
+        elif model_number == 7:
+            self.confidence_threshold = 0.25
+            self.iou_threshold = 0.70
+        elif model_number == 8:
+            self.confidence_threshold = 0.25
+            self.iou_threshold = 0.70
+        else:
             self.confidence_threshold = 0.25
             self.iou_threshold = 0.70

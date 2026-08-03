@@ -10,7 +10,12 @@ from object_cheating.components.table import tables_v2
 from object_cheating.components.input_panel import input_panel
 from object_cheating.components.warning_dialog import warning_dialog
 from object_cheating.components.delete_dialog import delete_dialog
+from object_cheating.components.archive_page import archive_page
+from object_cheating.components.evaluation_page import evaluation_page
+from object_cheating.components.evaluation_summary import evaluation_summary
 from object_cheating.states.camera_state import CameraState
+from object_cheating.states.archive_state import ArchiveState
+from object_cheating.states.evaluation_state import EvaluationState
 
 def index() -> rx.Component:
     return rx.box(
@@ -30,6 +35,20 @@ def index() -> rx.Component:
                             class_name="text-3xl font-bold text-cyan-50 drop-shadow-[0_0_14px_rgba(34,211,238,0.55)]"
                         ),
                     ),
+                    rx.link(
+                        rx.button(
+                            "\u67e5\u770b\u5f52\u6863",
+                            class_name="rounded-lg border border-emerald-300/50 bg-emerald-400/10 px-4 py-2 text-sm font-semibold text-emerald-100 shadow-[0_0_18px_rgba(16,185,129,0.22)] hover:bg-emerald-300/20",
+                        ),
+                        href="/archive",
+                    ),
+                    rx.link(
+                        rx.button(
+                            "\u5b66\u751f\u884c\u4e3a\u6210\u7ee9",
+                            class_name="rounded-lg border border-cyan-300/50 bg-cyan-400/10 px-4 py-2 text-sm font-semibold text-cyan-100 shadow-[0_0_18px_rgba(34,211,238,0.25)] hover:bg-cyan-300/20",
+                        ),
+                        href="/evaluation",
+                    ),
                     rx.button(
                         rx.cond(
                             CameraState.right_panel_collapsed,
@@ -41,8 +60,8 @@ def index() -> rx.Component:
                     ),
                     class_name="mb-6 flex items-center justify-between gap-4 border-b border-cyan-400/30 pb-4"
                 ),
-                rx.el.div(
-                    # Left Section: Camera Feed, Controls, and Table in separate sections
+                evaluation_summary(),
+                rx.el.div(                    # Left Section: Camera Feed, Controls, and Table in separate sections
                     rx.el.div(
                         rx.el.div(
                             camera_feed(),
@@ -87,4 +106,6 @@ app = rx.App(
         accent_color="grass",
     )
 )
-app.add_page(index)
+app.add_page(index, on_load=EvaluationState.load_dates)
+app.add_page(archive_page, route="/archive", on_load=ArchiveState.load_archive)
+app.add_page(evaluation_page, route="/evaluation", on_load=EvaluationState.load_dates)

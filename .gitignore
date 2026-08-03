@@ -7,3 +7,11 @@ __pycache__/
 *.env
 venv/
 detections/
+data/
+saved_frames/
+uploaded_files/
+*.bak*
+.idea/
+# Models and third-party (download separately)
+object_cheating/models/
+object_cheating/third_party/

@@ -1,8 +1,8 @@
 import reflex as rx
 from object_cheating.states.camera_state import CameraState
 
+
 def model_navigation() -> rx.Component:
-    """Komponen navigasi model."""
     return rx.hstack(
         rx.icon_button(
             rx.icon("chevron-left"),
@@ -10,11 +10,11 @@ def model_navigation() -> rx.Component:
             variant="surface",
             height="30px",
             width="30px",
-            disabled=CameraState.active_model == 1,  # Dinonaktifkan saat di Model 1
+            disabled=CameraState.active_model == 1,
         ),
         rx.badge(
             rx.center(
-                rx.text(f"Model {CameraState.active_model}"),
+                rx.text(rx.cond(CameraState.active_model == 7, "Model 6", f"Model {CameraState.active_model}")),
                 width="100%",
                 height="28px",
             ),
@@ -29,25 +29,22 @@ def model_navigation() -> rx.Component:
             variant="surface",
             height="30px",
             width="30px",
-            disabled=CameraState.active_model == 5,
+            disabled=CameraState.active_model == 7,
         ),
         spacing="2",
         align="center",
     )
 
+
 def controls() -> rx.Component:
-    """Controls component for detection and model selection."""
-    # Check if any media input is active
     media_active = rx.cond(
-        (CameraState.camera_active | 
-         (CameraState.current_frame != "") | 
-         CameraState.video_playing),
+        (CameraState.camera_active | (CameraState.current_frame != "") | CameraState.video_playing),
         True,
-        False
+        False,
     )
     return rx.hstack(
         rx.hstack(
-            rx.text("开启检测", class_name="text-cyan-100"),
+            rx.text("Enable Detection", class_name="text-cyan-100"),
             rx.switch(
                 checked=CameraState.detection_enabled,
                 on_change=CameraState.toggle_detection,
@@ -57,9 +54,9 @@ def controls() -> rx.Component:
                 transition="all 0.2s ease-in-out",
             ),
             spacing="2",
-            align="center",# Adds spacing between text and switch
+            align="center",
         ),
         model_navigation(),
         spacing="2",
-        class_name="flex justify-between rounded-xl border border-cyan-400/20 bg-cyan-950/30 p-3"
+        class_name="flex justify-between rounded-xl border border-cyan-400/20 bg-cyan-950/30 p-3",
     )

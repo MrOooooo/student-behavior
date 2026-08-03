@@ -2,6 +2,7 @@ import reflex as rx
 from object_cheating.states.threshold_state import ThresholdState
 from object_cheating.states.camera_state import CameraState
 
+
 def threshold() -> rx.Component:
     def threshold_input(value, on_change, step=0.01, min_value=0, max_value=1):
         return rx.input(
@@ -32,83 +33,41 @@ def threshold() -> rx.Component:
     def cross_model_thresholds() -> rx.Component:
         model1_card = rx.box(
             rx.text("Model 1", class_name="text-sm font-semibold text-cyan-50"),
-            threshold_row(
-                "Confidence",
-                CameraState.model1_confidence_threshold,
-                lambda value: CameraState.set_model_confidence_from_str(value, 1),
-            ),
-            threshold_row(
-                "IoU",
-                CameraState.model1_iou_threshold,
-                lambda value: CameraState.set_model_second_threshold_from_str(value, 1),
-            ),
+            threshold_row("Confidence", CameraState.model1_confidence_threshold, lambda value: CameraState.set_model_confidence_from_str(value, 1)),
+            threshold_row("IoU", CameraState.model1_iou_threshold, lambda value: CameraState.set_model_second_threshold_from_str(value, 1)),
             class_name="bg-[#08264f]/80 p-3 rounded-xl w-full space-y-2 border border-cyan-400/25",
         )
         model2_card = rx.box(
             rx.text("Model 2", class_name="text-sm font-semibold text-cyan-50"),
-            threshold_row(
-                "Confidence",
-                CameraState.model2_confidence_threshold,
-                lambda value: CameraState.set_model_confidence_from_str(value, 2),
-            ),
-            threshold_row(
-                "IoU",
-                CameraState.model2_iou_threshold,
-                lambda value: CameraState.set_model_second_threshold_from_str(value, 2),
-            ),
+            threshold_row("Confidence", CameraState.model2_confidence_threshold, lambda value: CameraState.set_model_confidence_from_str(value, 2)),
+            threshold_row("IoU", CameraState.model2_iou_threshold, lambda value: CameraState.set_model_second_threshold_from_str(value, 2)),
             class_name="bg-[#08264f]/80 p-3 rounded-xl w-full space-y-2 border border-cyan-400/25",
         )
         model3_card = rx.box(
             rx.text("Model 3", class_name="text-sm font-semibold text-cyan-50"),
-            threshold_row(
-                "CNN Confidence",
-                CameraState.model3_confidence_threshold,
-                lambda value: CameraState.set_model_confidence_from_str(value, 3),
-            ),
-            threshold_row(
-                "Duration (s)",
-                CameraState.model3_duration_threshold,
-                lambda value: CameraState.set_model_second_threshold_from_str(value, 3),
-                step=0.1,
-                min_value=1,
-                max_value=10,
-            ),
+            threshold_row("CNN Confidence", CameraState.model3_confidence_threshold, lambda value: CameraState.set_model_confidence_from_str(value, 3)),
+            threshold_row("Duration (s)", CameraState.model3_duration_threshold, lambda value: CameraState.set_model_second_threshold_from_str(value, 3), step=0.1, min_value=1, max_value=10),
             class_name="bg-[#08264f]/80 p-3 rounded-xl w-full space-y-2 border border-cyan-400/25",
         )
         model4_card = rx.box(
             rx.text("Model 4", class_name="text-sm font-semibold text-cyan-50"),
-            threshold_row(
-                "Detection Conf",
-                CameraState.model4_confidence_threshold,
-                lambda value: CameraState.set_model_confidence_from_str(value, 4),
-            ),
-            threshold_row(
-                "IoU",
-                CameraState.model4_iou_threshold,
-                lambda value: CameraState.set_model_second_threshold_from_str(value, 4),
-            ),
-            threshold_row(
-                "Action Conf",
-                CameraState.model4_action_confidence_threshold,
-                CameraState.set_model4_action_confidence_from_str,
-            ),
+            threshold_row("Detection Conf", CameraState.model4_confidence_threshold, lambda value: CameraState.set_model_confidence_from_str(value, 4)),
+            threshold_row("IoU", CameraState.model4_iou_threshold, lambda value: CameraState.set_model_second_threshold_from_str(value, 4)),
+            threshold_row("Action Conf", CameraState.model4_action_confidence_threshold, CameraState.set_model4_action_confidence_from_str),
             class_name="bg-[#08264f]/80 p-3 rounded-xl w-full space-y-2 border border-cyan-400/25",
         )
         model5_card = rx.box(
             rx.text("Model 5", class_name="text-sm font-semibold text-cyan-50"),
-            threshold_row(
-                "Face Conf",
-                CameraState.model5_face_confidence_threshold,
-                lambda value: CameraState.set_model_confidence_from_str(value, 5),
-            ),
-            threshold_row(
-                "Emotion Conf",
-                CameraState.model5_emotion_confidence_threshold,
-                lambda value: CameraState.set_model_second_threshold_from_str(value, 5),
-            ),
+            threshold_row("Face Conf", CameraState.model5_face_confidence_threshold, lambda value: CameraState.set_model_confidence_from_str(value, 5)),
+            threshold_row("Emotion Conf", CameraState.model5_emotion_confidence_threshold, lambda value: CameraState.set_model_second_threshold_from_str(value, 5)),
             class_name="bg-[#08264f]/80 p-3 rounded-xl w-full space-y-2 border border-cyan-400/25",
         )
-
+        model7_card = rx.box(
+            rx.text("Model 6", class_name="text-sm font-semibold text-cyan-50"),
+            threshold_row("Confidence", CameraState.model7_confidence_threshold, lambda value: CameraState.set_model_confidence_from_str(value, 7)),
+            threshold_row("IoU", CameraState.model7_iou_threshold, lambda value: CameraState.set_model_second_threshold_from_str(value, 7)),
+            class_name="bg-[#08264f]/80 p-3 rounded-xl w-full space-y-2 border border-cyan-400/25",
+        )
         return rx.vstack(
             rx.hstack(
                 rx.icon_button(
@@ -120,10 +79,7 @@ def threshold() -> rx.Component:
                     width="30px",
                 ),
                 rx.badge(
-                    rx.center(
-                        rx.text(f"Model {CameraState.cross_threshold_model}"),
-                        width="100%",
-                    ),
+                    rx.center(rx.text(rx.cond(CameraState.cross_threshold_model == 7, "Model 6", f"Model {CameraState.cross_threshold_model}")), width="100%"),
                     variant="surface",
                     min_width="100px",
                     text_align="center",
@@ -131,7 +87,7 @@ def threshold() -> rx.Component:
                 rx.icon_button(
                     rx.icon("chevron-right"),
                     on_click=CameraState.next_cross_threshold_model,
-                    disabled=CameraState.cross_threshold_model == 5,
+                    disabled=CameraState.cross_threshold_model == 7,
                     variant="surface",
                     height="30px",
                     width="30px",
@@ -147,6 +103,7 @@ def threshold() -> rx.Component:
                 (3, model3_card),
                 (4, model4_card),
                 (5, model5_card),
+                (7, model7_card),
                 model1_card,
             ),
             spacing="3",
@@ -157,22 +114,17 @@ def threshold() -> rx.Component:
         rx.vstack(
             rx.cond(
                 CameraState.cross_model_enabled,
-                rx.el.h3("模型阈值", class_name="text-lg font-semibold mb-2 text-cyan-50"),
-                rx.el.h3("阈值设置", class_name="text-lg font-semibold mb-2 text-cyan-50"),
+                rx.el.h3("Cross-Model Thresholds", class_name="text-lg font-semibold mb-2 text-cyan-50"),
+                rx.el.h3("Threshold Settings", class_name="text-lg font-semibold mb-2 text-cyan-50"),
             ),
             rx.cond(
                 CameraState.cross_model_enabled,
                 cross_model_thresholds(),
                 rx.fragment(
-                    # Confidence Threshold Section
                     rx.hstack(
                         rx.text(
-                            rx.cond(
-                                CameraState.active_model == 5,
-                                "Face Confidence:",
-                                "Confidence Threshold:"
-                            ),
-                            class_name="font-medium text-cyan-100"
+                            rx.cond(CameraState.active_model == 5, "Face Confidence:", "Confidence Threshold:"),
+                            class_name="font-medium text-cyan-100",
                         ),
                         rx.spacer(),
                         rx.hstack(
@@ -220,28 +172,19 @@ def threshold() -> rx.Component:
                         justify="between",
                         align="center",
                     ),
-                    # Second Threshold Section (IoU for Model 1 & 2, Duration for Model 3)
                     rx.hstack(
                         rx.text(
                             rx.cond(
                                 CameraState.active_model == 3,
                                 "Duration Threshold (s):",
-                                rx.cond(
-                                    CameraState.active_model == 5,
-                                    "Emotion Confidence:",
-                                    "IoU Threshold:"
-                                )
+                                rx.cond(CameraState.active_model == 5, "Emotion Confidence:", "IoU Threshold:"),
                             ),
-                            class_name="font-medium text-cyan-100"
+                            class_name="font-medium text-cyan-100",
                         ),
                         rx.spacer(),
                         rx.hstack(
                             rx.input(
-                                value=rx.cond(
-                                    CameraState.active_model == 3,
-                                    ThresholdState.duration_threshold,
-                                    ThresholdState.iou_threshold
-                                ),
+                                value=rx.cond(CameraState.active_model == 3, ThresholdState.duration_threshold, ThresholdState.iou_threshold),
                                 type="number",
                                 min=rx.cond(CameraState.active_model == 3, 1, 0),
                                 max=rx.cond(CameraState.active_model == 3, 10, 1),
@@ -287,7 +230,7 @@ def threshold() -> rx.Component:
                     ),
                 ),
             ),
-            class_name="border border-cyan-400/30 bg-[#061b3d]/80 p-4 rounded-2xl shadow-[0_0_24px_rgba(34,211,238,0.16)] w-full backdrop-blur"
+            class_name="border border-cyan-400/30 bg-[#061b3d]/80 p-4 rounded-2xl shadow-[0_0_24px_rgba(34,211,238,0.16)] w-full backdrop-blur",
         ),
         width="100%",
     )
